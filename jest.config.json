@@ -1,0 +1,22 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "tsconfig.json",
+      "packageJson": "package.json",
+      "isolatedModules": true
+    }
+  },
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "reporters": [
+    "jest-fixed-default-reporter/DefaultReporter",
+    "jest-fixed-default-reporter/SummaryReporter"
+  ],
+  "testEnvironment": "node",
+  "watchPathIgnorePatterns": [".*node_modules.*"],
+  "testTimeout": 120000,
+  "modulePathIgnorePatterns": ["<rootDir>/dist/"]
+}
