@@ -1,6 +1,6 @@
 class Client {
   constructor() {
-    this.client = new WebSocket('ws://localhost:8080');
+    this.client = new WebSocket('ws://localhost/server');
 
     this.client.addEventListener('open', () => {
       this.sendMessage('open connection');

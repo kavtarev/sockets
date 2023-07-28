@@ -4,7 +4,7 @@ import { MessageParser } from './message-parser';
 
 const chat = new Chat();
 
-const server = new WebSocketServer({ port: 8080, host: 'localhost' });
+const server = new WebSocketServer({ port: 8080, host: 'server' });
 
 server.on('connection', (socket: WebSocket) => {
   socket.on('open', () => {
@@ -33,6 +33,4 @@ server.on('error', e => {
   console.log('socket error', e);
 });
 
-server.on('listening', (whatever: any) => {
-  console.log('listening event', whatever);
-});
+console.log('up in 8080');

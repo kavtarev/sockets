@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "tsc & node dist/server/server.js",
+    "start:server": "nodemon --watch ./server --ext ts --exec 'tsc --build . && node ./dist/server/server.js'",
+    "start:client": "nodemon client/client-server.js ",
     "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "nodemon": "^3.0.1",
     "ws": "^8.13.0",
     "zod": "^3.21.4"
   },
