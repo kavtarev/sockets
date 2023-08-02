@@ -1,8 +1,17 @@
+import { randomUUID } from 'crypto';
 import { MessageParser } from '../message-parser';
 
 describe('MessageParser', () => {
+  it('return void if incorrect id', () => {
+    const msg = 'kok some body once told me';
+
+    const res = MessageParser.parse(msg);
+
+    expect(res).not.toBeDefined();
+  });
+
   it('return void if incorrect event', () => {
-    const msg = 'some body once told me';
+    const msg = `${randomUUID()} some body once told me`;
 
     const res = MessageParser.parse(msg);
 
@@ -10,7 +19,7 @@ describe('MessageParser', () => {
   });
 
   it('return void if no roomName', () => {
-    const msg = 'join';
+    const msg = `${randomUUID()} join`;
 
     const res = MessageParser.parse(msg);
 
@@ -18,17 +27,19 @@ describe('MessageParser', () => {
   });
 
   it('work correctly if correct input', () => {
-    const msg = `join room1 ${JSON.stringify({ text: 'hello' })}`;
+    const id = randomUUID();
+    const msg = `${id} join room1 ${JSON.stringify({ text: 'hello' })}`;
 
     const res = MessageParser.parse(msg);
 
     expect(res?.event).toBe('join');
+    expect(res?.id).toBe(id);
     expect(res?.roomName).toBe('room1');
     expect(res?.message.text).toBe('hello');
   });
 
   it('work correctly work with incorrect JSON', () => {
-    const msg = 'join room1 f';
+    const msg = `${randomUUID()} join room1 press f for respect`;
 
     const res = MessageParser.parse(msg);
 

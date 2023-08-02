@@ -6,4 +6,6 @@ export const schema = z.object({
   text: z.string(),
 });
 
+export const idSchema = z.string().uuid();
+
 export type Message = z.infer<typeof schema>;

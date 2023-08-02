@@ -1,8 +1,10 @@
 import { WebSocket } from 'ws';
 import { Message } from './types/zod';
+import { RoomSocketType } from './types/room';
+import { ErrorHandler } from './error-handler';
 
 export class Room {
-  private sockets: WebSocket[] = [];
+  private sockets: RoomSocketType[] = [];
 
   name: string;
 
@@ -10,28 +12,41 @@ export class Room {
     this.name = name;
   }
 
-  addSocket(socket: WebSocket) {
-    this.sockets.push(socket);
+  addSocket(props: RoomSocketType) {
+    this.sockets.push(props);
   }
 
   removeSocket(socket: WebSocket) {
-    const idx = this.sockets.findIndex(s => s === socket);
+    const idx = this.sockets.findIndex(s => s.socket === socket);
 
     if (idx === -1) {
-      socket.send('sneaky pete');
-      socket.close();
+      return ErrorHandler(socket);
     }
 
     this.sockets.splice(idx, 1);
   }
 
-  sendMessage(message: true | Message) {
-    if (typeof message === 'boolean') {
-      return true;
+  sendMessage({ message, socket }: { message: true | Message; socket: WebSocket }) {
+    if (typeof message !== 'boolean') {
+      if (message.isPrivate) {
+        this.sendPrivateMessage({ message, socket });
+      } else {
+        for (const s of this.sockets) {
+          s.socket.send(JSON.stringify({ text: message.text, type: 'message' }));
+        }
+      }
+    }
+    return true;
+  }
+
+  private sendPrivateMessage({ message, socket }: { message: Message; socket: WebSocket }) {
+    const receiver = this.sockets.find(s => s.id === message.to);
+
+    if (!receiver) {
+      return;
     }
 
-    for (const socket of this.sockets) {
-      socket.send(message.text);
-    }
+    socket.send(JSON.stringify({ text: message.text, type: 'message' }));
+    receiver.socket.send(JSON.stringify({ text: message.text, type: 'message' }));
   }
 }
