@@ -13,8 +13,6 @@ socket.onmessage = e => {
   const p = document.createElement('p');
   const mes = JSON.parse(e.data);
 
-  console.log(mes);
-
   if (mes.type === 'init') {
     id = mes.id;
     return;
@@ -24,15 +22,15 @@ socket.onmessage = e => {
   msg.appendChild(p);
 };
 
-btn.addEventListener('click', () => {
+btn.addEventListener('click', async () => {
   socket.send(`${id} message ${inpRoom.value} ${JSON.stringify({ text: inp.value, to: privateInp.value, isPrivate: !!privateInp.value })}`);
   inp.value = '';
 });
 
-joinRoomButton.addEventListener('click', () => {
+joinRoomButton.addEventListener('click', async () => {
   socket.send(`${id} join ${inpRoom.value} ${JSON.stringify({ text: inp.value })}`);
 });
 
-createRoomButton.addEventListener('click', () => {
+createRoomButton.addEventListener('click', async () => {
   socket.send(`${id} create ${inpRoom.value} ${JSON.stringify({ text: inp.value })}`);
 });

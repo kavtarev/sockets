@@ -2,3 +2,9 @@ button {
   color:aquamarine;
   background-color: blueviolet;
 }
+
+#emit {
+  width: 100px;
+  height: 100px;
+  background-color: burlywood;
+}
