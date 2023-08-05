@@ -2,15 +2,15 @@ name: default
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
 
 jobs:
   default:
     runs-on: ubuntu-latest
   
-  steps:
+    steps:
     # get repo code
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
