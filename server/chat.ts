@@ -36,12 +36,19 @@ export class Chat {
     }
   }
 
-  private createRoom(name: string) {
+  private async createRoom(name: string) {
     if (this.findRoom(name)) {
       return false;
     }
 
     this.rooms.push(new Room(name));
+
+    await fetch('http://client:3000/emit', {
+      method: 'POST',
+      body: JSON.stringify(this.rooms.map(r => r.name)),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
     return true;
   }
 

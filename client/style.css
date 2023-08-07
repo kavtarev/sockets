@@ -8,3 +8,8 @@ button {
   height: 100px;
   background-color: burlywood;
 }
+
+#room {
+  font-size: 35;
+  font-weight: bold;
+}

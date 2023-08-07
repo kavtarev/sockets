@@ -18,15 +18,21 @@ createServer(async (req, res) => {
     res.end(file);
   }
   if (req.url === '/emit') {
-    emitter.emit('event-emitted');
+    let list = '';
+
+    for await (const chunk of req) {
+      list += chunk.toString();
+    }
+
+    emitter.emit('event-emitted', list);
   }
   if (req.url === '/sse-stream') {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('cache-control', 'no-cache');
 
-    emitter.on('event-emitted', () => {
-      res.write('data: somebody once told me \n');
+    emitter.on('event-emitted', (list) => {
+      res.write(`data:${list}\n`);
       res.write('\n');
     });
   } else {

@@ -8,11 +8,13 @@ eventSource.onopen = function onSSEOpen() {
 eventSource.onerror = function onSSEError() {
   console.log('EventSource failed.');
 };
-eventSource.onmessage = message => {
-  sseDiv.innerText = message.data;
-};
 
-const emitBtn = document.getElementById('emit');
-emitBtn.addEventListener('click', async () => {
-  await fetch('http://localhost:3000/emit');
-});
+eventSource.onmessage = message => {
+  const rooms = JSON.parse(message.data);
+  for (const room of rooms) {
+    const p = document.createElement('p');
+    p.innerText = room;
+    p.id = 'room';
+    sseDiv.insertAdjacentElement('beforeend', p);
+  }
+};
