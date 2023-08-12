@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start:server": "nodemon --watch ./server --ext ts --exec 'tsc --build . && node ./dist/server/server.js'",
-    "start:client": "nodemon client/client-server.js ",
+    "start:client": "nodemon --watch ./client --ext ts --exec 'tsc --build . && node ./dist/client/client-server.js'",
     "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.3",
+    "@types/node": "^20.4.10",
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",

@@ -10,6 +10,7 @@ const server = new WebSocketServer({ port: 8080, host: 'server' });
 
 server.on('connection', (socket: WebSocket) => {
   socket.send(JSON.stringify({ id: randomUUID(), type: 'init' }));
+  chat.emitRooms();
 
   socket.on('message', msg => {
     const text = msg.toString();

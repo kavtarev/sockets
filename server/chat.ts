@@ -36,6 +36,14 @@ export class Chat {
     }
   }
 
+  async emitRooms() {
+    await fetch('http://client:3000/emit', {
+      method: 'POST',
+      body: JSON.stringify(this.rooms.map(r => r.name)),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   private async createRoom(name: string) {
     if (this.findRoom(name)) {
       return false;
@@ -43,12 +51,7 @@ export class Chat {
 
     this.rooms.push(new Room(name));
 
-    await fetch('http://client:3000/emit', {
-      method: 'POST',
-      body: JSON.stringify(this.rooms.map(r => r.name)),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
+    await this.emitRooms();
     return true;
   }
 

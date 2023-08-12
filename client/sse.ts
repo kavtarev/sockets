@@ -1,5 +1,5 @@
 const eventSource = new EventSource('http://localhost/sse-stream');
-const sseDiv = document.getElementById('sse');
+const sseDiv = document.getElementById('sse') as HTMLDivElement;
 
 eventSource.onopen = function onSSEOpen() {
   console.log('Connection to server opened.');
@@ -11,6 +11,7 @@ eventSource.onerror = function onSSEError() {
 
 eventSource.onmessage = message => {
   const rooms = JSON.parse(message.data);
+  sseDiv.innerText = '';
   for (const room of rooms) {
     const p = document.createElement('p');
     p.innerText = room;
