@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { Room } from './room';
 import { IEvents } from './types/events';
-import { Message } from './types/zod';
+import { Message } from './types/zod-types';
 
 export class Chat {
   private rooms: Room[] = [];

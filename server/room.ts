@@ -1,5 +1,5 @@
 import { WebSocket } from 'ws';
-import { Message } from './types/zod';
+import { Message } from './types/zod-types';
 import { RoomSocketType } from './types/room';
 import { ErrorHandler } from './error-handler';
 

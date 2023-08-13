@@ -9,7 +9,7 @@ const observer = new Observer();
 createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  if (req.url?.endsWith('.js')) {
+  if (req.url?.endsWith('.js') || req.url?.endsWith('.js.map')) {
     res.setHeader('Content-Type', 'application/javascript');
     const file = await readFile(`./dist/client${req.url}`);
     res.end(file);

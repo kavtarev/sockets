@@ -1,5 +1,5 @@
 import { IEvents, allowedEvents } from './types/events';
-import { schema, Message, idSchema } from './types/zod';
+import { schema, Message, idSchema } from './types/zod-types';
 
 export class MessageParser {
   static parse(msg: string) {

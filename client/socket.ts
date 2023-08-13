@@ -1,4 +1,4 @@
-export const socket = new WebSocket('ws://localhost/server');
+const socket = new WebSocket('ws://localhost/server');
 
 const btn = document.getElementById('btn') as HTMLButtonElement;
 const joinRoomButton = document.getElementById('btn-join') as HTMLButtonElement;
