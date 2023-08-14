@@ -1,8 +1,8 @@
-import WebSocket, { WebSocketServer } from 'ws';
 import { randomUUID } from 'crypto';
-import { Chat } from './chat';
-import { MessageParser } from './message-parser';
-import { ErrorHandler } from './error-handler';
+import WebSocket, { WebSocketServer } from 'ws';
+import { Chat } from './src/chat';
+import { MessageParser } from './src/message-parser';
+import { ErrorHandler } from './src/error-handler';
 
 const chat = new Chat();
 
@@ -32,4 +32,4 @@ server.on('error', e => {
   console.log('socket error', e);
 });
 
-console.log('up in 8080');
+console.log('up on 8080');

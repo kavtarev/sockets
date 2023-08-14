@@ -4,6 +4,7 @@ import { schema, Message, idSchema } from './types/zod-types';
 export class MessageParser {
   static parse(msg: string) {
     const [id, event, roomName, ...message] = msg.split(' ');
+
     const parsedMessage = this.checkText(message.join(' '));
 
     if (!this.checkMeta(event as IEvents, roomName) || !parsedMessage || !this.checkId(id)) {

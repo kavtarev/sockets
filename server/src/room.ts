@@ -20,7 +20,7 @@ export class Room {
     const idx = this.sockets.findIndex(s => s.socket === socket);
 
     if (idx === -1) {
-      return ErrorHandler(socket);
+      return ErrorHandler(socket, 'in remove');
     }
 
     this.sockets.splice(idx, 1);

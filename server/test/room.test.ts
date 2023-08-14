@@ -1,6 +1,6 @@
 import { WebSocket } from 'ws';
 import { randomUUID } from 'crypto';
-import { Room } from '../room';
+import { Room } from '../src/room';
 
 describe('MessageParser', () => {
   it('correctly add sockets', () => {

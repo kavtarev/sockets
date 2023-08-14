@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { MessageParser } from '../message-parser';
+import { MessageParser } from '../src/message-parser';
 
 describe('MessageParser', () => {
   it('return void if incorrect id', () => {

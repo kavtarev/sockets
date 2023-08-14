@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start:server": "nodemon --watch ./server --ext ts --exec 'tsc --build . && node ./dist/server/server.js'",
-    "start:client": "nodemon --watch ./client --ext ts --exec 'tsc --build . && node ./dist/client/client-server.js'",
+    "start": "nodemon --watch . --ext ts --exec 'tsc --build . && node ./dist/server.js'",
     "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [],

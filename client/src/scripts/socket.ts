@@ -52,13 +52,22 @@ uploadBtn.addEventListener('click', () => {
   const file = uploadInp.files[0];
   const fileReader = new FileReader();
   fileReader.readAsArrayBuffer(file);
-  fileReader.onload = async () => {
+
+  fileReader.onload = async ev => {
+    if (!ev.target?.result) {
+      return;
+    }
+
+    socket.binaryType = 'arraybuffer';
+    const enc = new TextDecoder();
+
     socket.send(
       `${id} message ${inpRoom.value} ${JSON.stringify({
-        text: fileReader.result,
+        text: enc.decode(ev.target.result as ArrayBuffer),
         to: privateInp.value,
         isPrivate: !!privateInp.value,
       })}`,
     );
+    socket.binaryType = 'blob';
   };
 });

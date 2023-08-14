@@ -22,7 +22,7 @@ services:
       - sh
       - -c
       - |
-        npm run start:client
+        (cd client; npm run start)
 
   server:
     image: node:18-alpine
@@ -35,4 +35,4 @@ services:
       - sh
       - -c
       - |
-        npm run start:server
+        (cd server; npm run start)
