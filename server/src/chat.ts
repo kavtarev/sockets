@@ -86,7 +86,7 @@ export class Chat {
   }) {
     const room = this.findRoom(roomName);
 
-    if (!room || !message?.text) {
+    if (!room || !message?.text || !room.isIn(socket)) {
       return false;
     }
 

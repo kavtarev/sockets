@@ -24,12 +24,16 @@ export class MessageParser {
       idSchema.parse(id);
       return true;
     } catch (e) {
+      console.log(11111);
+
       return false;
     }
   }
 
   private static checkMeta(event: IEvents | undefined, roomName: string | undefined) {
     if (!event || !allowedEvents.includes(event) || !roomName) {
+      console.log(22222);
+
       return false;
     }
 
@@ -46,6 +50,8 @@ export class MessageParser {
       schema.parse(obj);
       return obj;
     } catch (e) {
+      console.log(333333);
+
       return false;
     }
   }

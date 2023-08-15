@@ -12,6 +12,10 @@ export class Room {
     this.name = name;
   }
 
+  isIn(socket: WebSocket) {
+    return this.sockets.some(s => s.socket === socket);
+  }
+
   addSocket(props: RoomSocketType) {
     this.sockets.push(props);
   }
@@ -32,7 +36,7 @@ export class Room {
         this.sendPrivateMessage({ message, socket });
       } else {
         for (const s of this.sockets) {
-          s.socket.send(JSON.stringify({ text: message.text, type: 'message' }));
+          s.socket.send(JSON.stringify({ text: message.text, type: 'text', event: 'message' }));
         }
       }
     }

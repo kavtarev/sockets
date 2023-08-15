@@ -9,39 +9,64 @@ const privateInp = document.getElementById('private') as HTMLInputElement;
 const msg = document.getElementById('msg') as HTMLDivElement;
 const uploadInp = document.getElementById('uploadInp') as HTMLInputElement;
 const uploadBtn = document.getElementById('uploadBtn') as HTMLButtonElement;
+const img = document.getElementById('img') as HTMLImageElement;
 
 let id = '';
 
 socket.onmessage = e => {
-  const p = document.createElement('p');
-  const mes = JSON.parse(e.data);
+  const message = JSON.parse(e.data);
 
-  if (mes.type === 'init') {
-    id = mes.id;
+  if (message.event === 'init') {
+    id = message.id;
     return;
   }
 
-  p.innerText = `${mes.text}`;
-  msg.appendChild(p);
+  if (message.type === 'text') {
+    const p = document.createElement('img');
+    p.innerText = `${message.text}`;
+    const encoded = Uint8Array.from([...message.text].map(ch => ch.charCodeAt(0)));
+
+    const blob = new Blob([encoded], { type: 'image/jpeg' });
+    const urlCreator = window.URL || window.webkitURL;
+
+    const imageUrl = urlCreator.createObjectURL(blob);
+    img.src = imageUrl;
+    msg.appendChild(p);
+  }
+
+  if (message.type === 'image') {
+    const imgMessage = document.createElement('img');
+    msg.appendChild(imgMessage);
+  }
 };
 
 btn.addEventListener('click', async () => {
+  if (!inpRoom.value) {
+    return;
+  }
   socket.send(
     `${id} message ${inpRoom.value} ${JSON.stringify({
       text: inp.value,
       to: privateInp.value,
       isPrivate: !!privateInp.value,
+      type: 'text',
     })}`,
   );
   inp.value = '';
 });
 
 joinRoomButton.addEventListener('click', async () => {
-  socket.send(`${id} join ${inpRoom.value} ${JSON.stringify({ text: inp.value })}`);
+  if (!inpRoom.value) {
+    return;
+  }
+  socket.send(`${id} join ${inpRoom.value} ${JSON.stringify({ text: inp.value, type: 'text' })}`);
 });
 
 createRoomButton.addEventListener('click', async () => {
-  socket.send(`${id} create ${inpRoom.value} ${JSON.stringify({ text: inp.value })}`);
+  if (!inpRoom.value) {
+    return;
+  }
+  socket.send(`${id} create ${inpRoom.value} ${JSON.stringify({ text: inp.value, type: 'text' })}`);
 });
 
 uploadBtn.addEventListener('click', () => {
@@ -58,16 +83,16 @@ uploadBtn.addEventListener('click', () => {
       return;
     }
 
-    socket.binaryType = 'arraybuffer';
-    const enc = new TextDecoder();
+    const arrayBufferView = new Uint8Array(ev.target.result as ArrayBuffer);
+    const decoded = String.fromCharCode(...new Uint8Array(arrayBufferView));
 
     socket.send(
       `${id} message ${inpRoom.value} ${JSON.stringify({
-        text: enc.decode(ev.target.result as ArrayBuffer),
+        text: decoded,
         to: privateInp.value,
         isPrivate: !!privateInp.value,
+        type: 'image',
       })}`,
     );
-    socket.binaryType = 'blob';
   };
 });

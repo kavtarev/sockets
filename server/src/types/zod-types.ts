@@ -4,6 +4,7 @@ export const schema = z.object({
   isPrivate: z.boolean().optional(),
   to: z.string().optional(),
   text: z.string(),
+  type: z.enum(['image', 'text']),
 });
 
 export const idSchema = z.string().uuid();

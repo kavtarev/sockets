@@ -28,7 +28,7 @@ describe('MessageParser', () => {
 
   it('work correctly if correct input', () => {
     const id = randomUUID();
-    const msg = `${id} join room1 ${JSON.stringify({ text: 'hello' })}`;
+    const msg = `${id} join room1 ${JSON.stringify({ text: 'hello', type: 'text' })}`;
 
     const res = MessageParser.parse(msg);
 
