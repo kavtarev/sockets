@@ -1,5 +1,5 @@
 import { createServer } from 'http';
-import { appendFile, readFile } from 'fs/promises';
+import { appendFile } from 'fs/promises';
 import { randomUUID } from 'crypto';
 
 import { Observer } from './src/observer.js';
@@ -9,16 +9,11 @@ const observer = new Observer();
 createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  if (req.url?.endsWith('.js') || req.url?.endsWith('.js.map')) {
-    res.setHeader('Content-Type', 'application/javascript');
-    const file = await readFile(`./dist/src/scripts${req.url}`);
-    res.end(file);
+  if (req.url?.endsWith('/favicon.ico')) {
+    res.end();
+    return;
   }
-  if (req.url === '/style.css') {
-    res.setHeader('Content-Type', 'text/css');
-    const file = await readFile('./dist/src/html/style.css');
-    res.end(file);
-  }
+
   if (req.url?.endsWith('/upload')) {
     // const type = req.headers['mime-type'];
     const name = req.headers['file-name'];
@@ -28,6 +23,7 @@ createServer(async (req, res) => {
       await appendFile(`${name}`, chunk);
     }
     res.end('done');
+    return;
   }
   if (req.url === '/emit') {
     let list = '';
@@ -38,10 +34,12 @@ createServer(async (req, res) => {
 
     observer.send(list);
     res.end('');
+    return;
   }
   if (req.url === '/count') {
     observer.count();
     res.end('');
+    return;
   }
   if (req.url === '/sse-stream') {
     res.setHeader('Content-Type', 'text/event-stream');
@@ -56,9 +54,6 @@ createServer(async (req, res) => {
     req.on('error', () => {
       observer.remove(id);
     });
-  } else {
-    const file = await readFile('./dist/src/html/index.html');
-    res.end(file);
   }
 }).listen(3000, () => {
   console.log('up on 3000');

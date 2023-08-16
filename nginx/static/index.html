@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div>
+    <div>
+      <input id='inp-room' type="text">
+      <input id='inp' type="text">
+      <button id='btn'>send</button>
+      <button id='btn-join'>join room</button>
+      <button id='btn-create'>create room</button>
+      <input id='private' type="text">
+      <button id='emit'>EMIT</button>
+      <input type="file" id='uploadInp'>
+      <button id='uploadBtn'>upload file</button>
+    </div>
+    <img id='img' src="" alt="image">
+    <div id='msg'></div>
+    <div id='sse'></div>
+  </div>
+  <script>var exports = {};</script>
+  <script type="module" src="socket.js"></script>
+  <script type="module" src="sse.js"></script>
+  <!-- <script type="module" src="upload.js"></script> -->
+</body>
+</html>

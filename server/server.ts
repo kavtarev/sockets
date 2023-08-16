@@ -5,7 +5,6 @@ import { MessageParser } from './src/message-parser';
 import { ErrorHandler } from './src/error-handler';
 
 const chat = new Chat();
-
 const server = new WebSocketServer({ port: 8080, host: 'server' });
 
 server.on('connection', (socket: WebSocket) => {
@@ -24,12 +23,12 @@ server.on('connection', (socket: WebSocket) => {
   });
 
   socket.on('error', e => {
-    console.log('socket-error', e);
+    console.log('SOCKET SOCKET SOCKETerror', e);
   });
 });
 
 server.on('error', e => {
-  console.log('socket error', e);
+  console.log('SERVER SERVER SERVER error', e);
 });
 
 console.log('up on 8080');

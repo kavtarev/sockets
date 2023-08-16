@@ -6,6 +6,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/hosts:/etc/hosts
+      - ./nginx/static:/static
     ports:
       - "80:80"
     environment:

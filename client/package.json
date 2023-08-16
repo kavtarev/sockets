@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "start": "nodemon --watch . --ext ts --exec 'tsc --build . && node ./dist/client-server.js'",
+    "start": "nodemon --watch . --ext ts --exec 'cd src/scripts && tsc --build . && cd ../.. && tsc --build . && node ./dist/client-server.js'",
     "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [],
