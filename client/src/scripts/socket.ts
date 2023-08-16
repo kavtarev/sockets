@@ -9,7 +9,6 @@ const privateInp = document.getElementById('private') as HTMLInputElement;
 const msg = document.getElementById('msg') as HTMLDivElement;
 const uploadInp = document.getElementById('uploadInp') as HTMLInputElement;
 const uploadBtn = document.getElementById('uploadBtn') as HTMLButtonElement;
-const img = document.getElementById('img') as HTMLImageElement;
 
 let id = '';
 
@@ -22,8 +21,22 @@ socket.onmessage = e => {
   }
 
   if (message.type === 'text') {
-    const p = document.createElement('img');
-    p.innerText = `${message.text}`;
+    const div = document.createElement('div');
+    div.className = message.sender.id === id ? 'mine' : 'others';
+    const p = document.createElement('p');
+    p.innerText = `At ${new Date().toDateString()} \n ${message.sender.id} said: \n${message.text}`;
+
+    div.appendChild(p);
+    msg.appendChild(div);
+    return;
+  }
+
+  if (message.type === 'image') {
+    const div = document.createElement('div');
+    div.className = message.sender.id === id ? 'mine' : 'others';
+    const p = document.createElement('p');
+    p.innerText = `At ${new Date().toDateString()} \n ${message.sender.id} send`;
+    const img = document.createElement('img');
     const encoded = Uint8Array.from([...message.text].map(ch => ch.charCodeAt(0)));
 
     const blob = new Blob([encoded], { type: 'image/jpeg' });
@@ -31,12 +44,9 @@ socket.onmessage = e => {
 
     const imageUrl = urlCreator.createObjectURL(blob);
     img.src = imageUrl;
-    msg.appendChild(p);
-  }
-
-  if (message.type === 'image') {
-    const imgMessage = document.createElement('img');
-    msg.appendChild(imgMessage);
+    div.appendChild(p);
+    div.appendChild(img);
+    msg.appendChild(div);
   }
 };
 

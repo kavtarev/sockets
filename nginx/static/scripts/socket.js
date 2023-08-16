@@ -18,7 +18,6 @@ const privateInp = document.getElementById('private');
 const msg = document.getElementById('msg');
 const uploadInp = document.getElementById('uploadInp');
 const uploadBtn = document.getElementById('uploadBtn');
-const img = document.getElementById('img');
 let id = '';
 socket.onmessage = e => {
     const message = JSON.parse(e.data);
@@ -27,18 +26,28 @@ socket.onmessage = e => {
         return;
     }
     if (message.type === 'text') {
-        const p = document.createElement('img');
-        p.innerText = `${message.text}`;
+        const div = document.createElement('div');
+        div.className = message.sender.id === id ? 'mine' : 'others';
+        const p = document.createElement('p');
+        p.innerText = `At ${new Date().toDateString()} \n ${message.sender.id} said: \n${message.text}`;
+        div.appendChild(p);
+        msg.appendChild(div);
+        return;
+    }
+    if (message.type === 'image') {
+        const div = document.createElement('div');
+        div.className = message.sender.id === id ? 'mine' : 'others';
+        const p = document.createElement('p');
+        p.innerText = `At ${new Date().toDateString()} \n ${message.sender.id} send`;
+        const img = document.createElement('img');
         const encoded = Uint8Array.from([...message.text].map(ch => ch.charCodeAt(0)));
         const blob = new Blob([encoded], { type: 'image/jpeg' });
         const urlCreator = window.URL || window.webkitURL;
         const imageUrl = urlCreator.createObjectURL(blob);
         img.src = imageUrl;
-        msg.appendChild(p);
-    }
-    if (message.type === 'image') {
-        const imgMessage = document.createElement('img');
-        msg.appendChild(imgMessage);
+        div.appendChild(p);
+        div.appendChild(img);
+        msg.appendChild(div);
     }
 };
 btn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {

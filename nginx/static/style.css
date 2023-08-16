@@ -13,3 +13,17 @@ button {
   font-size: 35;
   font-weight: bold;
 }
+
+#msg {
+  width: 50vw;
+}
+
+.mine {
+  max-width: 30vw;
+  margin-left: auto;
+}
+
+.others {
+  max-width: 30vw;
+  margin-right: auto;
+}

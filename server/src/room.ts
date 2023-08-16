@@ -30,27 +30,47 @@ export class Room {
     this.sockets.splice(idx, 1);
   }
 
-  sendMessage({ message, socket }: { message: true | Message; socket: WebSocket }) {
-    if (typeof message !== 'boolean') {
-      if (message.isPrivate) {
-        this.sendPrivateMessage({ message, socket });
-      } else {
-        for (const s of this.sockets) {
-          s.socket.send(JSON.stringify({ text: message.text, type: 'text', event: 'message' }));
-        }
+  sendMessage({ message, socket, id }: { message: true | Message; socket: WebSocket; id: string }) {
+    if (typeof message === 'boolean') {
+      return;
+    }
+
+    if (message.isPrivate) {
+      this.sendPrivateMessage({ message, socket, id });
+    } else {
+      for (const s of this.sockets) {
+        s.socket.send(
+          JSON.stringify({
+            text: message.text,
+            type: message.type,
+            event: 'message',
+            sender: { id },
+          }),
+        );
       }
     }
+
     return true;
   }
 
-  private sendPrivateMessage({ message, socket }: { message: Message; socket: WebSocket }) {
+  private sendPrivateMessage({
+    message,
+    socket,
+    id,
+  }: {
+    message: Message;
+    socket: WebSocket;
+    id: string;
+  }) {
     const receiver = this.sockets.find(s => s.id === message.to);
 
     if (!receiver) {
       return;
     }
 
-    socket.send(JSON.stringify({ text: message.text, type: 'message' }));
-    receiver.socket.send(JSON.stringify({ text: message.text, type: 'message' }));
+    socket.send(JSON.stringify({ text: message.text, type: message.type, sender: { id } }));
+    receiver.socket.send(
+      JSON.stringify({ text: message.text, type: message.type, sender: { id } }),
+    );
   }
 }

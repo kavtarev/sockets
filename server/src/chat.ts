@@ -32,7 +32,12 @@ export class Chat {
     }
 
     if (event === 'message') {
-      return this.sendMessage({ roomName, message, socket });
+      return this.sendMessage({
+        roomName,
+        message,
+        socket,
+        id,
+      });
     }
   }
 
@@ -79,7 +84,9 @@ export class Chat {
     roomName,
     message,
     socket,
+    id,
   }: {
+    id: string;
     roomName: string;
     message?: Message;
     socket: WebSocket;
@@ -90,7 +97,7 @@ export class Chat {
       return false;
     }
 
-    return room.sendMessage({ message, socket });
+    return room.sendMessage({ message, socket, id });
   }
 
   findRoom(name: string) {
